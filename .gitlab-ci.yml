@@ -5,6 +5,7 @@ stages:
   - checks
   - tests
   - build
+  - packaging
   - releasenote
 
 variables:
@@ -13,6 +14,8 @@ variables:
   AF_BINARY_REPO: "gitlab-ci-linter"
   AF_BINARY_PACKAGE: "gitlab-ci-linter"
   CI_GITLAB_URL: "https://gitlab.com"
+  DEBEMAIL: $GITLAB_USER_EMAIL
+  DEBFULLNAME: $GITLAB_USER_NAME
 
 before_script:
   - ln -s $CI_PROJECT_DIR $GOPATH/src/
@@ -97,6 +100,43 @@ release build windows-386: *_binary_release
 release build windows-amd64: *_binary_release
 release build darwin-386: *_binary_release
 release build darwin-amd64: *_binary_release
+
+.build_debian: &_build_debian
+  stage: packaging
+  script:
+    - export GOTARGET=${CI_JOB_NAME##* }
+    - export GOOS=${GOTARGET%%-*}
+    - export ARCH=${GOTARGET##*-}
+    - export GOARCH=${ARCH%%=*}
+    - export DEBARCH=${ARCH##*=}
+    - export BINARY=gitlab-ci-linter.${GOOS}-${GOARCH}
+    - dpkg-buildpackage -us -uc --build=any --target-arch=$DEBARCH
+    - mv ../*.${DEBARCH}.deb .
+  artifacts:
+    name: "${CI_JOB_NAME}"
+    paths:
+      - "*.deb"
+    expire_in: 1 year
+
+debian build linux-i386=386:
+  <<: *_build_debian
+  dependencies:
+    - "release build linux-386"
+
+debian build linux-amd64=amd64:
+  <<: *_build_debian
+  dependencies:
+    - "release build linux-amd64"
+
+debian build linux-arm=arm:
+  <<: *_build_debian
+  dependencies:
+    - "release build linux-arm"
+
+debian build linux-arm64=arm64:
+  <<: *_build_debian
+  dependencies:
+    - "release build linux-arm64"
 
 Update Release note:
   stage: releasenote

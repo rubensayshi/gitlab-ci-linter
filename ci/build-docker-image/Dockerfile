@@ -9,6 +9,10 @@ RUN apt-get update -y && \
 
 FROM golang:1.9
 
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends dh-make && \
+    apt-get clean && apt-get autoclean && rm -fr /tmp/* /var/cache/apt/*
+
 ADD  https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 /usr/local/bin/jq
 RUN chmod +x /usr/local/bin/jq
 

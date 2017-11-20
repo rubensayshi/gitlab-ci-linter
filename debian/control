@@ -1,0 +1,17 @@
+Source: gitlab-ci-linter
+Section: unknown
+Priority: optional
+Maintainer: Olivier Robardet <olivier.robardeŧ@gmail.com>
+Build-Depends: debhelper (>=9)
+Standards-Version: 4.0.0
+Homepage: https://gitlab.com/orobardet/gitlab-ci-linter
+Vcs-Git: https://gitlab.com/orobardet/gitlab-ci-linter.git
+Vcs-browser: https://gitlab.com/orobardet/gitlab-ci-linter
+
+Package: gitlab-ci-linter
+Architecture: any
+Description: A .gitlab-ci.yml linter using Gitlab HTTP API
+ This tool use the Gitlab API to validate your local .gitlab-ci.yml.
+ It can be installed as a git pre-commit hook, preventing commit (and so push) of an invalid .gitlab-ci.yml.
+ The tool itself does not lint anything: it uses the lint API of a Gitlab instance.
+ So it needs to be run somewhere with an access to the Gitlab instance where your project come from.

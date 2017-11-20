@@ -1,0 +1,5 @@
+gitlab-ci-linter (2.1.0) trusty xenial zesty artful stable; urgency=low
+
+  * First Debian package release
+
+ -- Olivier Robardet <olivier.robardet@gmail.com>  Sun, 26 Nov 2017 18:11:36 +0100

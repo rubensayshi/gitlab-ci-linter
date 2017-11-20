@@ -1,0 +1,13 @@
+#!/usr/bin/make -f
+build:
+
+build-arch:
+
+clean:
+
+binary-arch:
+	dh_install $(BINARY) usr/bin/gitlab-ci-linter
+
+binary-indep:
+
+binary: build binary-arch binary-indep
