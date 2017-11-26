@@ -117,6 +117,8 @@ release build darwin-amd64: *_binary_release
     paths:
       - "*.deb"
     expire_in: 1 year
+  only:
+    - tags
 
 debian build linux-i386=386:
   <<: *_build_debian
